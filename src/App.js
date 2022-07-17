@@ -87,7 +87,7 @@ const onSearchChange = (event) => {
 function App() {
   let [imageurl, setimageurl] = useState("");
   let [searchinput, setsearchinput] = useState("");
-  let [box, setbox] = useState("");
+  let [boxarr, setboxarr] = useState([]);
 
   function calculatefacelocation(data) {
     const clarifaidata = data;
@@ -103,7 +103,6 @@ function App() {
   }
 
   const onsearchchange = (event) => {
-    console.log(event.target.value);
     setsearchinput(event.target.value);
   };
   const onButtonSubmit = () => {
@@ -150,14 +149,15 @@ function App() {
       requestOptions
     )
       .then((response) => response.text())
-      .then((result) =>
-        setbox(
-          calculatefacelocation(
-            JSON.parse(result).outputs[0].data.regions[0].region_info
-              .bounding_box
-          )
-        )
-      )
+      .then((result) => {
+        let regionsarr = JSON.parse(result).outputs[0].data.regions.map(
+          (regions) => {
+            return calculatefacelocation(regions.region_info.bounding_box);
+          }
+        );
+        //[0].data.regions[0].region_info.bounding_box
+        setboxarr(regionsarr);
+      })
       .catch((error) => console.log("error", error));
   };
 
@@ -188,7 +188,7 @@ function App() {
         onsearchchange={onsearchchange}
       />
 
-      <FaceRecognition imageurl={imageurl} box={box} />
+      <FaceRecognition imageurl={imageurl} boxarr={boxarr} />
     </div>
   );
 }
