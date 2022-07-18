@@ -2,7 +2,7 @@ import React from "react";
 const ImageLinkForm = ({ onButtonSubmit, onsearchchange }) => {
   return (
     <>
-      <p className="f2 mycenter mt5 tc">
+      <p className="f2 mycenter mt5 tc mh3">
         This app will detect faces in your images
       </p>
       <h5 className="tc navy f4 fw4 tracked-mega">Using Machine Learning</h5>
