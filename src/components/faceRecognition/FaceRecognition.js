@@ -4,7 +4,7 @@ import "./facerecognition.css";
 const FaceRecognition = ({ imageurl, boxarr }) => {
   let i = 0;
   return (
-    <div className="center ma">
+    <div className="mycenter">
       <div className="mt2 relative">
         {boxarr.map((box) => {
           return (
