@@ -1,10 +1,13 @@
 import "./App.css";
 import { useState } from "react";
+
 import Navigation from "./components/navigation/Navigation";
+import Signinform from "./components/signinform/Signinform";
 import ImageLinkForm from "./components/Imagelinkform/ImageLinkForm";
 import FaceRecognition from "./components/faceRecognition/FaceRecognition";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import Registerform from "./components/registerform/Registerform";
 
 const options = {
   fpsLimit: 120,
@@ -38,7 +41,7 @@ const options = {
       width: 1,
     },
     collisions: {
-      enable: true,
+      enable: false,
     },
     move: {
       direction: "none",
@@ -88,6 +91,8 @@ function App() {
   let [imageurl, setimageurl] = useState("");
   let [searchinput, setsearchinput] = useState("");
   let [boxarr, setboxarr] = useState([]);
+  let [issignedin, setsignedin] = useState(false);
+  let [currstatus, setcurrstatus] = useState("signin");
 
   function calculatefacelocation(data) {
     const clarifaidata = data;
@@ -181,14 +186,28 @@ function App() {
         loaded={particlesLoaded}
         options={options}
       />
-      <Navigation />
 
-      <ImageLinkForm
-        onButtonSubmit={onButtonSubmit}
-        onsearchchange={onsearchchange}
+      <Navigation
+        issignedin={issignedin}
+        setsignedin={setsignedin}
+        currstatus={currstatus}
+        setcurrstatus={setcurrstatus}
       />
-
-      <FaceRecognition imageurl={imageurl} boxarr={boxarr} />
+      {issignedin ? (
+        <>
+          <ImageLinkForm
+            onButtonSubmit={onButtonSubmit}
+            onsearchchange={onsearchchange}
+          />
+          <FaceRecognition imageurl={imageurl} boxarr={boxarr} />
+        </>
+      ) : currstatus === "signin" ? (
+        <>
+          <Signinform setsignedin={setsignedin} setcurrstatus = {setcurrstatus} />
+        </>
+      ) : (
+        <Registerform setsignedin={setsignedin} />
+      )}
     </div>
   );
 }
